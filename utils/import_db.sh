@@ -1,3 +1,3 @@
 #/bin/sh
 
-mongorestore -d $1 -o $2
+mongorestore -d $1 $2
