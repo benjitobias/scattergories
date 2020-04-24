@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block app_content %}
 <button id="get_categories">Get Scategories!</button>
 <h1 id="round"></h1>
 <ul id="categories_list">
 
 </ul>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
     <script>
          $(document).ready(function() {
             $("#get_categories").click(function() {

@@ -1,22 +1,15 @@
 {% extends "base.html" %}
-
-{% block content %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block app_content %}
 <h1>Create new game</h1>
 <button id="get_code">Generate code!</button>
-<p id="game_code"></p>
-
 <h1>Join existing game</h1>
 <form method="post" novalidate id="join_game" action="{{ url_for('join_game') }}">
-        {{ form.hidden_tag() }}
-        {{ form.player.label }}
-        {{ form.player(size=32) }}
-        </br>
-        {{ form.session_code.label }}
-        {{ form.session_code(size=32) }}
-        </br>
-        {{ form.submit }}
+        {{ wtf.quick_form(form) }}
 </form>
-
+{% endblock %}}
+{% block scripts %}
+{{ super() }}
 <script>
     $(document).ready(function() {
             $("#get_code").click(function() {
@@ -27,13 +20,12 @@
                     success: function(data)
                     {
                         var game_code = data["game_code"];
-                        $("#game_code").html(game_code);
                         $("#session_code").val(game_code);
+                        $("#session_code").css("background-color", "rgba(28, 217, 85, 0.2)");
+
                     }
                 })
             });
         });
 </script>
-
-
 {% endblock %}}

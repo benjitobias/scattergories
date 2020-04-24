@@ -1,16 +1,18 @@
 {% extends "base.html" %}
-
-{% block content %}
-<h1>Add new word</h1>
-<form method="post" novalidate id="new_category_form" action="{{ url_for('add_category') }}">
-        {{ form.hidden_tag() }}
-        {{ form.category.label }}</br>
-        {{ form.category(size=32) }}
-        {{ form.submit }} <p id="response"></p>
-</form>
-<ul id="categories_list">
-
-</ul>
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block app_content %}
+    <h1>Add new word</h1>
+        <div class="row">
+            <div class="col-md-4">
+                <form method="post" novalidate id="new_category_form" action="{{ url_for('add_category') }}">
+                    {{ wtf.quick_form(form) }}
+                </form>
+                <p id="response"></p>
+            </div>
+        </div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
     <script>
          $(document).ready(function() {
             $("#new_category_form").submit(function(e) {
@@ -31,6 +33,4 @@
             });
         });
     </script>
-
-
 {% endblock %}}
