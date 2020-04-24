@@ -42,8 +42,10 @@ def join_game():
 
     db.create_player(session_code, player_name)
 
-    #response = make_response(render_template())
-    return session_code + " - " + player_name
+    response = make_response(redirect(url_for('play_game')))
+    response.set_cookie('player', player_name)
+    response.set_cookie('session_code', session_code)
+    return response
 
 
 @app.route('/add_category', methods=['POST'])
@@ -53,7 +55,26 @@ def add_category():
     return jsonify({'success': True})
 
 
+@app.route('/gen_categories')
+def gen_categories():
+    print(request.cookies)
+    session_code = request.cookies.get('session_code')
+    categories = db.get_twelve_categories()
+    db.insert_session_categories(session_code, categories)
+    db.update_round(session_code)
+    return jsonify({'categories': categories})
+
+
 @app.route('/get_categories')
 def get_categories():
-    categories = db.get_twelve_categories()
-    return jsonify({'categories': categories})
+    session_code = request.cookies.get('session_code')
+    game_data = db.get_session_categories(session_code)
+    game_round = game_data["round"]
+    categories = game_data["categories"][0]
+
+    return jsonify({"round": game_round, "categories": categories})
+
+
+@app.route('/play')
+def play_game():
+    return render_template("play.html")

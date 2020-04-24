@@ -28,16 +28,55 @@ def get_twelve_categories():
     return categories
 
 
+def insert_session_categories(session_code, categories):
+    session_collection.update(
+        {"session_code": session_code},
+        {"$unset": {"categories": ""}}
+        )
+
+    session_collection.update(
+        {"session_code": session_code},
+        {
+            "$push": {
+                "categories": categories
+            }
+        })
+
+
+def get_session_round(session_code):
+    return session_collection.find_one({"session_code": session_code}, {"round": 1})["round"]
+
+
+def update_round(session_code):
+    new_round = get_session_round(session_code) + 1
+    session_collection.update({"session_code": session_code},
+                              {"$set": {"round": int(new_round)}}
+                              )
+
+
+def get_session_categories(session_code):
+    session_data = session_collection.find_one({"session_code": session_code}, {"categories": 1, "round": 1})
+    return session_data
+
+
+
 def get_session(session_code):
     return session_collection.find_one({"session_code": session_code})
 
 
 def create_session(session_code):
-    session_collection.insert_one({"session_code": session_code, "players": []})
+    session_collection.insert_one({"session_code": session_code, "players": [], "round": 0})
 
 
 def get_player(session_code, player):
-    return session_collection.find_one({"session_code": session_code, "player": player})
+    player = session_collection.aggregate([
+        {"$unwind": "$players"},
+        {"$match": {"session_code": session_code, "players.name": player}},
+    ])
+    try:
+        return player.next()
+    except StopIteration:
+        return None
 
 
 def create_player(session_code, player):

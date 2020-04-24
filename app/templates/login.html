@@ -20,13 +20,15 @@
 <script>
     $(document).ready(function() {
             $("#get_code").click(function() {
+                document.cookie = "host=1";
                 $.ajax({
                     type: "GET",
                     url: "{{ url_for('gen_session_code') }}",
                     success: function(data)
                     {
-                        $("#game_code").html(data["game_code"])
-
+                        var game_code = data["game_code"];
+                        $("#game_code").html(game_code);
+                        $("#session_code").val(game_code);
                     }
                 })
             });

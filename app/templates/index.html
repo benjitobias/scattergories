@@ -8,7 +8,6 @@
         {{ form.category(size=32) }}
         {{ form.submit }} <p id="response"></p>
 </form>
-<button id="get_categories">Get Scategories!</button>
 <ul id="categories_list">
 
 </ul>
@@ -29,20 +28,6 @@
                         $("#response").html("Added!");
                     }
                 });
-            });
-            $("#get_categories").click(function() {
-                $.ajax({
-                    type: "GET",
-                    url: "{{ url_for('get_categories') }}",
-                    success: function(data)
-                    {
-                        $.each(data["categories"], function(index, category){
-                            index = index + 1;
-                            $("#categories_list").append("<li>" + index +  ": " +  category + "</li>");
-                        })
-
-                    }
-                })
             });
         });
     </script>
