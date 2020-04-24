@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<button id="get_categories">Get Scategories!</button>
+<h1 id="round"></h1>
+<ul id="categories_list">
+
+</ul>
+    <script>
+         $(document).ready(function() {
+            $("#get_categories").click(function() {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url_for('gen_categories') }}",
+                    success: function(data)
+                    {
+                       // $.each(data["categories"], function(index, category){
+                        //    index = index + 1;
+                         //   $("#categories_list").append("<li>" + index +  ": " +  category + "</li>");
+                        //})
+
+                    }
+                })
+            });
+            getCategories();
+        });
+
+        var round = 0;
+
+            function getCategories() {
+                var categories = "";
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url_for('get_categories') }}",
+                    success: function(data) {
+                        categories = data["categories"];
+                        current_round = data["round"];
+                        if (current_round > round) {
+                            round = current_round;
+                            newRound(round, categories)
+                        }
+                    }
+                });
+               t = setTimeout(getCategories, 600);
+            }
+
+        function newRound(round, categories){
+                $("#round").text("Round " + round);
+                $("#categories_list").empty();
+                $.each(categories, function(index, category){
+                    index = index + 1;
+                    $("#categories_list").append("<li>" + index +  ": " +  category + "</li>");
+                })
+            };
+    </script>
+
+
+{% endblock %}}
