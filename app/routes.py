@@ -57,7 +57,6 @@ def add_category():
 
 @app.route('/gen_categories')
 def gen_categories():
-    print(request.cookies)
     session_code = request.cookies.get('session_code')
     categories = db.get_twelve_categories()
     db.insert_session_categories(session_code, categories)
@@ -70,8 +69,11 @@ def get_categories():
     session_code = request.cookies.get('session_code')
     game_data = db.get_session_categories(session_code)
     game_round = game_data["round"]
-    categories = game_data["categories"][0]
-
+    try:
+        categories = game_data["categories"][0]
+    except KeyError:
+        # Categories haven't been created yet
+        return jsonify({"info": "categories not yet created"})
     return jsonify({"round": game_round, "categories": categories})
 
 
