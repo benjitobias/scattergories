@@ -21,7 +21,6 @@ def add_category(category):
 
 def get_twelve_categories():
     pipeline = [
-        {"$match": {"used": False}},
         {"$sample": {"size": 12}}
     ]
     categories = [cat["category"] for cat in list(category_collection.aggregate(pipeline))]
