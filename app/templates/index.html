@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Add new word</h1>
+<form method="post" novalidate id="new_category_form" action="{{ url_for('add_category') }}">
+        {{ form.hidden_tag() }}
+        {{ form.category.label }}</br>
+        {{ form.category(size=32) }}
+        {{ form.submit }} <p id="response"></p>
+</form>
+<button id="get_categories">Get Scategories!</button>
+<ul id="categories_list">
+
+</ul>
+    <script>
+         $(document).ready(function() {
+            $("#new_category_form").submit(function(e) {
+                e.preventDefault();
+
+                var form = $(this);
+                var url = form.attr('action');
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(),
+                    success: function(data)
+                    {
+                        $("#response").html("Added!");
+                    }
+                });
+            });
+            $("#get_categories").click(function() {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url_for('get_categories') }}",
+                    success: function(data)
+                    {
+                        $.each(data["categories"], function(index, category){
+                            index = index + 1;
+                            $("#categories_list").append("<li>" + index +  ": " +  category + "</li>");
+                        })
+
+                    }
+                })
+            });
+        });
+    </script>
+
+
+{% endblock %}}

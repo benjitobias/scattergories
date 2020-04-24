@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Create new game</h1>
+<button id="get_code">Generate code!</button>
+<p id="game_code"></p>
+
+<h1>Join existing game</h1>
+<form method="post" novalidate id="join_game" action="{{ url_for('join_game') }}">
+        {{ form.hidden_tag() }}
+        {{ form.player.label }}
+        {{ form.player(size=32) }}
+        </br>
+        {{ form.session_code.label }}
+        {{ form.session_code(size=32) }}
+        </br>
+        {{ form.submit }}
+</form>
+
+<script>
+    $(document).ready(function() {
+            $("#get_code").click(function() {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url_for('gen_session_code') }}",
+                    success: function(data)
+                    {
+                        $("#game_code").html(data["game_code"])
+
+                    }
+                })
+            });
+        });
+</script>
+
+
+{% endblock %}}
