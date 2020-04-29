@@ -1,5 +1,6 @@
 from flask import render_template, flash, redirect, url_for, jsonify, request, make_response
 import random
+import string
 
 import db
 from app import app
@@ -60,7 +61,10 @@ def gen_categories():
     session_code = request.cookies.get('session_code')
     categories = db.get_twelve_categories()
     db.insert_session_categories(session_code, categories)
+    letter = random.choice(string.ascii_uppercase)
+    db.insert_session_letter(session_code, letter)
     db.update_round(session_code)
+
     return jsonify({'categories': categories})
 
 
@@ -69,12 +73,13 @@ def get_categories():
     session_code = request.cookies.get('session_code')
     game_data = db.get_session_categories(session_code)
     game_round = game_data["round"]
+    letter = db.get_session_letter(session_code)["letter"]
     try:
         categories = game_data["categories"][0]
     except KeyError:
         # Categories haven't been created yet
         return jsonify({"info": "categories not yet created"})
-    return jsonify({"round": game_round, "categories": categories})
+    return jsonify({"round": game_round, "categories": categories, "letter": letter})
 
 
 @app.route('/play')

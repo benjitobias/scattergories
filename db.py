@@ -84,3 +84,22 @@ def create_player(session_code, player):
         {"$addToSet": {"players": {"name": player}}}
     )
 
+
+def insert_session_letter(session_code, letter):
+    session_collection.update(
+        {"session_code": session_code},
+        {"$unset": {"letter": ""}}
+    )
+
+    session_collection.update(
+        {"session_code": session_code},
+        {
+            "$push": {
+                "letter": letter
+            }
+        })
+
+
+def get_session_letter(session_code):
+    return session_collection.find_one({"session_code": session_code}, {"letter": 1, "_id": 0})
+

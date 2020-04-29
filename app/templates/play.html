@@ -2,7 +2,7 @@
 
 {% block app_content %}
 <button id="get_categories">Get Scattergories!</button>
-<h1 id="round"></h1>
+<h1 id="round"></h1><h2 id="letter" style="color:blue"></h2>
 <ul id="categories_list">
 
 </ul>
@@ -35,17 +35,19 @@
                     success: function(data) {
                         categories = data["categories"];
                         current_round = data["round"];
+                        letter = data["letter"];
                         if (current_round > round) {
                             round = current_round;
-                            newRound(round, categories)
+                            newRound(round, categories, letter)
                         }
                     }
                 });
                t = setTimeout(getCategories, 600);
             }
 
-        function newRound(round, categories){
+        function newRound(round, categories, letter){
                 $("#round").text("Round " + round);
+                $("#letter").text(letter);
                 $("#categories_list").empty();
                 $.each(categories, function(index, category){
                     index = index + 1;
