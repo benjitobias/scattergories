@@ -33,6 +33,8 @@ def gen_session_code():
 @app.route("/join_game", methods=['POST'])
 def join_game():
     session_code = request.form["session_code"]
+    if " " not in session_code:
+        session_code = session_code[:3] + " " + session_code[3:]
     player_name = request.form["player"]
     if not db.get_session(session_code):
         flash("No game session found")
@@ -73,8 +75,8 @@ def get_categories():
     session_code = request.cookies.get('session_code')
     game_data = db.get_session_categories(session_code)
     game_round = game_data["round"]
-    letter = db.get_session_letter(session_code)["letter"]
     try:
+        letter = db.get_session_letter(session_code)["letter"]
         categories = game_data["categories"][0]
     except KeyError:
         # Categories haven't been created yet
@@ -84,4 +86,8 @@ def get_categories():
 
 @app.route('/play')
 def play_game():
-    return render_template("play.html")
+    session_code = request.cookies.get('session_code')
+    if not session_code:
+        flash("First join a game!")
+        return redirect(url_for('login'))
+    return render_template("play.html", session_code=session_code)
