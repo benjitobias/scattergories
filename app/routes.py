@@ -4,7 +4,7 @@ import string
 
 import db
 from app import app
-from app.forms import JoinGameForm, AddNewCategoryForm
+from app.forms import JoinGameForm, AddNewCategoryForm, UpdateCategoryForm, DeleteCategoryForm
 
 
 @app.route('/')
@@ -91,3 +91,28 @@ def play_game():
         flash("First join a game!")
         return redirect(url_for('login'))
     return render_template("play.html", session_code=session_code)
+
+
+@app.route('/manage_categories')
+def manage_categories():
+    categories = db.get_all_categories()
+    add_form = AddNewCategoryForm()
+    update_form = UpdateCategoryForm()
+    delete_form = DeleteCategoryForm()
+    return render_template("categories.html", categories=categories,
+                           add_form=add_form, update_form=update_form, delete_form=delete_form)
+
+
+@app.route('/update_category', methods=['POST'])
+def update_category():
+    category_id = request.form["category_id"]
+    new_category = request.form["category"]
+    db.update_category(category_id, new_category)
+    return jsonify({'category': new_category, "_id": category_id})
+
+
+@app.route('/delete_category', methods=['POST'])
+def delete_category():
+    category_id = request.form["category_id"]
+    db.delete_category(category_id)
+    return jsonify({"_id": category_id})
