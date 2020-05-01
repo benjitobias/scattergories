@@ -1,3 +1,5 @@
+from bson.objectid import ObjectId
+
 from pymongo import MongoClient
 
 import config
@@ -103,3 +105,14 @@ def insert_session_letter(session_code, letter):
 def get_session_letter(session_code):
     return session_collection.find_one({"session_code": session_code}, {"letter": 1, "_id": 0})
 
+
+def get_all_categories():
+    return list(category_collection.find())
+
+
+def update_category(category_id, category):
+    category_collection.update({"_id": ObjectId(category_id)}, {"category": category})
+
+
+def delete_category(category_id):
+    category_collection.remove({"_id": ObjectId(category_id)})
