@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, HiddenField
 from wtforms.validators import DataRequired
 
 from config import *
@@ -13,6 +13,15 @@ class AddNewWordForm(FlaskForm):
 class AddNewCategoryForm(FlaskForm):
     category = StringField('Category', validators=[DataRequired()], id="new_category")
     submit = SubmitField("Add")
+
+
+class UpdateCategoryForm(FlaskForm):
+    category = StringField('Category', id="category")
+    category_id = HiddenField()
+
+
+class DeleteCategoryForm(FlaskForm):
+    category_id = HiddenField()
 
 
 class JoinGameForm(FlaskForm):
