@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block app_content %}
+<audio id="beep" src="{{ url_for('.static', filename='beep-05.wav') }}" preload="auto"></audio>
 <p>Game code: {{ session_code }}</p>
 <button id="get_categories">Get Scattergories!</button>
 <h1 id="round"></h1>
@@ -45,7 +46,7 @@
                             newRound(round, categories, letter)
                             var display = $("#time");
                             clearInterval(timer);
-                            timer = startTimer(display, 60 * 2);
+                            timer = startTimer(display, 5);
                         }
                     }
                 });
@@ -65,9 +66,8 @@
 
                 if (--timer < 0) {
                 clearInterval(intervalId);
+                        endRound();
                     display.text("02:00");
-
-                  alert("Time Up!");
                   timer = duration;
                 }
               }, 1000);
@@ -83,6 +83,11 @@
                     $("#categories_list").append("<li>" + index +  ": " +  category + "</li>");
                 })
             };
+
+         function endRound() {
+            document.getElementById("beep").play();
+            alert("Time Up!");
+        }
     </script>
 
 
