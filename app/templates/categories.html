@@ -3,71 +3,69 @@
 
 {% block app_content %}
 
-<ul id="categories_list">
-    {% if categories %}
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Category</th>
-                <th scope="col">Add</th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <form method="post" novalidate id="new_category_form" action="{{ url_for('add_category') }}">
-                    <th>
-                        {{ add_form.category(class="form-control", placeholder="New category") }}
+{% if categories %}
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Category</th>
+            <th scope="col">Add</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <form method="post" novalidate id="new_category_form" action="{{ url_for('add_category') }}">
+                <th>
+                    {{ add_form.category(class="form-control", placeholder="New category") }}
 
-                    </th>
-                    <th>
-                        {{ add_form.submit(class="btn btn-success btn-sm") }}
-                    </th>
-                    <th id="add_result">
+                </th>
+                <th>
+                    {{ add_form.submit(class="btn btn-success btn-sm") }}
+                </th>
+                <th id="add_result">
 
-                    </th>
-                </form>
-            </tr>
-        </tbody>
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Category</th>
-                <th scope="col">Edit</th>
-                <th scope="col">Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for category in categories %}
-            <tr id="{{ category._id }}">
-                    <th scope="row">{{ loop.index }}</th>
-                    <td>{{category.category}}</td>
-                    <td>
-                        <form method="post" class="update_category_form" action="{{ url_for('update_category') }}">
-                            <span  class="col-xs-4">
-                                {{ update_form.category(class="form-control", placeholder=category.category) }}
-                                {{ update_form.category_id(value=category._id) }}
-                            </span>
-                            <button type="submit" class="update-category glyphicon glyphicon-pencil btn btn-info btn-sm"></button>
-                        </form>
-                    </td>
-                    <td>
-                        <form method="post" class="delete_category_form" action="{{ url_for('delete_category') }}">
-                            <span  class="col-xs-4">
-                                {{ delete_form.category_id(value=category._id) }}
-                            </span>
-                            <button type="submit" class="delete-category glyphicon glyphicon-trash btn btn-danger btn-sm"></button>
-                        </form>
-                    </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    {% else %}
-        <p>No categories found </p>
-    {% endif %}
+                </th>
+            </form>
+        </tr>
+    </tbody>
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Category</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody id="category_table">
+    {% for category in categories %}
+        <tr id="{{ category._id }}">
+                <th scope="row">{{ loop.index }}</th>
+                <td>{{category.category}}</td>
+                <td>
+                    <form method="post" class="update_category_form" action="{{ url_for('update_category') }}">
+                        <span  class="col-xs-4">
+                            {{ update_form.category(class="form-control", placeholder=category.category) }}
+                            {{ update_form.category_id(value=category._id) }}
+                        </span>
+                        <button type="submit" class="update-category glyphicon glyphicon-pencil btn btn-info btn-sm"></button>
+                    </form>
+                </td>
+                <td>
+                    <form method="post" class="delete_category_form" action="{{ url_for('delete_category') }}">
+                        <span  class="col-xs-4">
+                            {{ delete_form.category_id(value=category._id) }}
+                        </span>
+                        <button type="submit" class="delete-category glyphicon glyphicon-trash btn btn-danger btn-sm"></button>
+                    </form>
+                </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <p>No categories found </p>
+{% endif %}
 
-</ul>
 {% endblock %}
 {% block scripts %}
 {{ super() }}
