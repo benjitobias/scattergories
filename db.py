@@ -8,17 +8,12 @@ from config import *
 client = MongoClient("localhost", 27017)
 
 scat_db = client[config.DB_NAME]
-word_collection = scat_db[config.WORD_COLLECTION_NAME]
 session_collection = scat_db[config.SESSION_COLLECTION_NAME]
 category_collection = scat_db[config.CATEGORY_COLLECTION_NAME]
 
 
-def add_word(word):
-    word_collection.insert_one({"word": word})
-
-
 def add_category(category):
-    category_collection.insert_one({"category": category})
+    return category_collection.insert_one({"category": category})
 
 
 def get_twelve_categories():
