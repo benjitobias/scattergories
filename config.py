@@ -1,7 +1,6 @@
 import os
 
 DB_NAME = "scat"
-WORD_COLLECTION_NAME = "words"
 CATEGORY_COLLECTION_NAME = "categories"
 SESSION_COLLECTION_NAME = "sessions"
 
