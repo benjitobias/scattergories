@@ -46,7 +46,7 @@
                             newRound(round, categories, letter)
                             var display = $("#time");
                             clearInterval(timer);
-                            timer = startTimer(display, 60 * 2);
+                            timer = startTimer(display, 14);
                         }
                     }
                 });
@@ -85,7 +85,7 @@
             };
 
          function endRound() {
-            document.getElementById("beep").play();
+            //document.getElementById("beep").play();
             alert("Time Up!");
         }
     </script>
