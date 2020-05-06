@@ -1,36 +1,44 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 {% block app_content %}
-    <h1>Add new category</h1>
-        <div class="row">
-            <div class="col-md-4">
-                <form method="post" novalidate id="new_category_form" action="{{ url_for('add_category') }}">
-                    {{ wtf.quick_form(form) }}
-                </form>
-                <p id="response"></p>
-            </div>
-        </div>
+<h1>Rules</h1>
+<ol class="list-group">
+    <li class="list-group-item">
+        <span class="badge badge-primary badge-pill"></span>
+        The list is used to remember your answers, spelling mistakes are acceptable <b>IF</b> the intended word is remembered correctly.
+    </li>
+    <li class="list-group-item">
+            <span class="badge badge-primary badge-pill"></span>
+        When the letter isn't <i>"T"</i>, an answer beginning with <i>"The"</i> doesn't count.
+    </li>
+    <li class="list-group-item">
+            <span class="badge badge-primary badge-pill"></span>
+        Adjectives aren't allowed unless it has a significant change. For example, <i>Panda</i> and <i>Red Panda</i> are accepted. <i>Car</i> and <i>Red Car</i> are not. Neither are adverbs.
+    </li>
+    <li class="list-group-item">
+            <span class="badge badge-primary badge-pill"></span>
+        The same word is not to be used twice on the list even if it has a different meaning. <i>Drake</i> the bird and <i>Drake</i> the musician is classed as the same.
+    </li>
+    <li class="list-group-item">
+            <span class="badge badge-primary badge-pill"></span>
+            An answer is accepted unless challenged by another player. If challenged, the answer must be proven.
+    </li>
+    <li class="list-group-item">
+            <span class="badge badge-primary badge-pill"></span>
+        Guessing is allowed but an example must be given. <i>Billie</i> is a name in a song, but <span data-toggle="tooltip" data-placement="top" title="Billie Jean!">which song?</span> Other players are allowed to help.
+    </li>
+    <li class="list-group-item">
+            <span class="badge badge-primary badge-pill"></span>
+            Disagreements go to a vote. If the vote is even, the point is given as people have voted in favour of an opponent.
+    </li>
+    <li class="list-group-item">
+            <span class="badge badge-primary badge-pill"></span>
+            Benji is the boss. What Benji says, goes. Also, Abby-Jo has to send photos of Bump.
+    </li>
+
+
+</ol>
 {% endblock %}
 {% block scripts %}
 {{ super() }}
-    <script>
-         $(document).ready(function() {
-            $("#new_category_form").submit(function(e) {
-                e.preventDefault();
-
-                var form = $(this);
-                var url = form.attr('action');
-
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    data: form.serialize(),
-                    success: function(data)
-                    {
-                        $("#response").html("Added!");
-                    }
-                });
-            });
-        });
-    </script>
 {% endblock %}}
