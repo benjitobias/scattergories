@@ -3,7 +3,13 @@
 {% block app_content %}
 <audio id="beep" src="{{ url_for('.static', filename='beep-05.wav') }}" preload="auto"></audio>
 <p>Game code: {{ session_code }}</p>
-<button id="get_categories">Get Scattergories!</button>
+<div id="host">
+    {% if host %}
+    <button id="get_categories">Get Scattergories!</button>
+    {% else %}
+    <p id="waiting">Waiting for host...</p>
+    {% endif %}
+</div>
 <h1 id="round"></h1>
 <div>Time left: <span id="time">02:00</span></div>
 <h2 id="letter" style="color:blue"></h2>
@@ -42,6 +48,7 @@
                         current_round = data["round"];
                         letter = data["letter"];
                         if (current_round > round) {
+                            $("#waiting").hide();
                             round = current_round;
                             newRound(round, categories, letter)
                             var display = $("#time");

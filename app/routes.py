@@ -87,10 +87,15 @@ def get_categories():
 @app.route('/play')
 def play_game():
     session_code = request.cookies.get('session_code')
+    host = request.cookies.get('host')
+    if host == "1":
+        host = True
+    else:
+        host = False
     if not session_code:
         flash("First join a game!")
         return redirect(url_for('login'))
-    return render_template("play.html", session_code=session_code)
+    return render_template("play.html", session_code=session_code, host=host)
 
 
 @app.route('/manage_categories')
