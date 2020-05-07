@@ -35,18 +35,18 @@ def join_game():
     session_code = request.form["session_code"]
     if " " not in session_code:
         session_code = session_code[:3] + " " + session_code[3:]
-    player_name = request.form["player"]
+#    player_name = request.form["player"]
     if not db.get_session(session_code):
         flash("No game session found")
         return redirect(url_for('login'))
-    if db.get_player(session_code, player_name):
-        flash("Player %s already exists" % player_name)
-        return redirect(url_for('login'))
+#    if db.get_player(session_code, player_name):
+#        flash("Player %s already exists" % player_name)
+#        return redirect(url_for('login'))
 
-    db.create_player(session_code, player_name)
+#    db.create_player(session_code, player_name)
 
     response = make_response(redirect(url_for('play_game')))
-    response.set_cookie('player', player_name)
+#    response.set_cookie('player', player_name)
     response.set_cookie('session_code', session_code)
     return response
 

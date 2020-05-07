@@ -25,6 +25,6 @@ class DeleteCategoryForm(FlaskForm):
 
 
 class JoinGameForm(FlaskForm):
-    player = StringField('Player name', validators=[DataRequired()], id="player")
+    # player = StringField('Player name', validators=[DataRequired()], id="player")
     session_code = StringField('Game code', validators=[DataRequired()], id="session_code")
     submit = SubmitField("Join!")
