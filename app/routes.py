@@ -63,7 +63,7 @@ def gen_categories():
     session_code = request.cookies.get('session_code')
     categories = db.get_twelve_categories()
     db.insert_session_categories(session_code, categories)
-    letter = random.choice(string.ascii_uppercase)
+    letter = random.choice(string.ascii_uppercase.replace("X", ""))
     db.insert_session_letter(session_code, letter)
     db.update_round(session_code)
 
