@@ -13,13 +13,13 @@
 <script>
     $(document).ready(function() {
             $("#get_code").click(function() {
-                document.cookie = "host=1";
                 $.ajax({
                     type: "GET",
                     url: "{{ url_for('gen_session_code') }}",
                     success: function(data)
                     {
                         var game_code = data["game_code"];
+                        document.cookie = `host=${game_code}`;
                         $("#session_code").val(game_code);
                         $("#session_code").css("background-color", "rgba(28, 217, 85, 0.2)");
 

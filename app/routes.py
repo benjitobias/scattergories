@@ -88,7 +88,7 @@ def get_categories():
 def play_game():
     session_code = request.cookies.get('session_code')
     host = request.cookies.get('host')
-    if host == "1":
+    if host == session_code:
         host = True
     else:
         host = False
