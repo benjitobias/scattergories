@@ -86,22 +86,28 @@ def get_categories():
 
 @app.route('/play', methods=['GET'])
 def play_game():
+    session_code = None
     session_param = request.args.get("session_code")
-    session_code = request.cookies.get('session_code')
-    host = request.cookies.get('host')
+    session_cookie = request.cookies.get('session_code')
+    host_cookie = request.cookies.get('host')
+    if session_param:
+        session_code = session_param
+    else:
+        session_code = session_cookie
+    if not session_code:
+        flash("First join a game!")
+        return redirect(url_for('login'))
+    if not db.get_session(session_code):
+        flash("No game session found")
+        return redirect(url_for('login'))
+    print(session_code)
     share_link = request.url_root + url_for("play_game") + "?session_code=" + quote(session_code)
-    if host == session_code:
+    if host_cookie == session_code:
         host = True
     else:
         host = False
-    if not session_code and not session_param:
-        flash("First join a game!")
-        return redirect(url_for('login'))
     response = make_response(render_template("play.html", session_code=session_code, host=host, share_link=share_link))
-    if session_param:
-        print("--------------")
-        print(session_param)
-        print("--------------")
+    if not session_cookie:
         response.set_cookie('session_code', session_param)
     return response
 
