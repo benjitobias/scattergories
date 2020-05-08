@@ -5,7 +5,7 @@
 <p class="alert alert-info"><strong>Game code: </strong>{{ session_code }}</br><strong class="float-right">Invite link: </strong><a>{{ share_link }}</a></p>
 <div id="host">
     {% if host %}
-    <button id="get_categories">Get Scattergories!</button>
+    <button type="button" class="btn btn-success" id="get_categories">Get Scattergories!</button>
     {% else %}
     <p id="waiting">Waiting for host...</p>
     {% endif %}
