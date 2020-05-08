@@ -84,18 +84,25 @@ def get_categories():
     return jsonify({"round": game_round, "categories": categories, "letter": letter})
 
 
-@app.route('/play')
+@app.route('/play', methods=['GET'])
 def play_game():
+    session_param = request.args.get("session_code")
     session_code = request.cookies.get('session_code')
     host = request.cookies.get('host')
     if host == session_code:
         host = True
     else:
         host = False
-    if not session_code:
+    if not session_code and not session_param:
         flash("First join a game!")
         return redirect(url_for('login'))
-    return render_template("play.html", session_code=session_code, host=host)
+    response = make_response(render_template("play.html", session_code=session_code, host=host))
+    if session_param:
+        print("--------------")
+        print(session_param)
+        print("--------------")
+        response.set_cookie('session_code', session_param)
+    return response
 
 
 @app.route('/manage_categories')
