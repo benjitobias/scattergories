@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, url_for, jsonify, request, make_response
 import random
 import string
-
+from urllib.parse import quote
 import db
 from app import app
 from app.forms import JoinGameForm, AddNewCategoryForm, UpdateCategoryForm, DeleteCategoryForm
@@ -89,6 +89,7 @@ def play_game():
     session_param = request.args.get("session_code")
     session_code = request.cookies.get('session_code')
     host = request.cookies.get('host')
+    share_link = request.url_root + url_for("play_game") + "?session_code=" + quote(session_code)
     if host == session_code:
         host = True
     else:
@@ -96,7 +97,7 @@ def play_game():
     if not session_code and not session_param:
         flash("First join a game!")
         return redirect(url_for('login'))
-    response = make_response(render_template("play.html", session_code=session_code, host=host))
+    response = make_response(render_template("play.html", session_code=session_code, host=host, share_link=share_link))
     if session_param:
         print("--------------")
         print(session_param)

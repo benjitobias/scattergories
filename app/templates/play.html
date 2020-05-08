@@ -2,7 +2,7 @@
 
 {% block app_content %}
 <audio id="beep" src="{{ url_for('.static', filename='beep-05.wav') }}" preload="auto"></audio>
-<p>Game code: {{ session_code }}</p>
+<p class="alert alert-info"><strong>Game code: </strong>{{ session_code }}</br><strong class="float-right">Invite link: </strong><a>{{ share_link }}</a></p>
 <div id="host">
     {% if host %}
     <button id="get_categories">Get Scattergories!</button>
